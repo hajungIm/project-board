@@ -1,3 +1,7 @@
+
+insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at, modified_by)
+values ('ihj', 'abcd1234', 'IHJ', 'ihj@email.com', 'i am hj.', now(), 'ihj', now(), 'ihj');
+
 insert into article (title, content, hashtag, created_by, modified_by, created_at, modified_at)
 values ('abc', 'i am sue', '#purple', 'a', 'b', '2021-05-30 23:53:46', '2021-03-10 08:48:50');
 
