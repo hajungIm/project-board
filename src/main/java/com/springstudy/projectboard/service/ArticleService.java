@@ -2,15 +2,13 @@ package com.springstudy.projectboard.service;
 
 import com.springstudy.projectboard.domain.type.SearchType;
 import com.springstudy.projectboard.dto.ArticleDto;
-import com.springstudy.projectboard.dto.ArticleUpdateDto;
+import com.springstudy.projectboard.dto.ArticleWithCommentsDto;
 import com.springstudy.projectboard.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -20,12 +18,12 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Transactional(readOnly = true)
-    public Page<ArticleDto> searchArticles(SearchType title, String search_keyword) {
+    public Page<ArticleDto> searchArticles(SearchType title, String search_keyword, Pageable pageable) {
         return Page.empty();
     }
 
     @Transactional(readOnly = true)
-    public ArticleDto searchArticle(long l) {
+    public ArticleWithCommentsDto getArticle(long articleId) {
         return null;
     }
 
@@ -33,11 +31,13 @@ public class ArticleService {
 
     }
 
-    public void updateArticle(long articleId, ArticleUpdateDto dto) {
+    public void updateArticle(ArticleDto dto) {
 
     }
 
     public void deleteArticle(long articleId) {
 
     }
+
 }
+
