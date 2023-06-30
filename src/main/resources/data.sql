@@ -28,12 +28,12 @@ insert into user_account (user_id, user_password, nickname, email, memo, created
 values ('uno3', '{noop}asdf1234', 'Uno3', 'uno3@mail.com', 'I am Uno3.', now(), 'uno3', now(), 'uno3')
 ;
 
-/* 해시태그 포함 데이터
+-- 해시태그 포함 데이터
 insert into article (user_id, title, content, created_by, modified_by, created_at, modified_at, hashtag)
 values
     ('uno', 'A', 'abc', 'ihj', 'ihj', '2021-05-30 23:53:46', '2021-05-30 23:53:46', '#abc'),
     ('uno', 'AB', 'abc', 'ihj', 'ihj', '2021-05-30 23:53:46', '2021-05-30 23:53:46', '#def'),
-    ('uno', 'AC', 'abc', 'ihj', 'ihj', '2021-05-30 23:53:46', '2021-05-30 23:53:46', '#def');*/
+    ('uno', 'AC', 'abc', 'ihj', 'ihj', '2021-05-30 23:53:46', '2021-05-30 23:53:46', '#def');
 
 -- 123 게시글
 insert into article (user_id, title, content, created_by, modified_by, created_at, modified_at)
