@@ -27,6 +27,11 @@ insert into user_account (user_id, user_password, nickname, email, memo, created
                           modified_by)
 values ('uno3', '{noop}asdf1234', 'Uno3', 'uno3@mail.com', 'I am Uno3.', now(), 'uno3', now(), 'uno3')
 ;
+insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at,
+                          modified_by)
+values ('ihj', '{noop}pw', 'ihj', 'ihj@email.com', 'memo', now(), 'ihj', now(), 'ihj')
+;
+
 
 -- 해시태그 포함 데이터
 insert into article (user_id, title, content, created_by, modified_by, created_at, modified_at, hashtag)
