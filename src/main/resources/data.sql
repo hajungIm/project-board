@@ -32,13 +32,14 @@ insert into user_account (user_id, user_password, nickname, email, memo, created
 values ('ihj', '{noop}pw', 'ihj', 'ihj@email.com', 'memo', now(), 'ihj', now(), 'ihj')
 ;
 
-
+/*
 -- 해시태그 포함 데이터
 insert into article (user_id, title, content, created_by, modified_by, created_at, modified_at, hashtag)
 values
     ('uno', 'A', 'abc', 'ihj', 'ihj', '2021-05-30 23:53:46', '2021-05-30 23:53:46', '#abc'),
     ('uno', 'AB', 'abc', 'ihj', 'ihj', '2021-05-30 23:53:46', '2021-05-30 23:53:46', '#def'),
     ('uno', 'AC', 'abc', 'ihj', 'ihj', '2021-05-30 23:53:46', '2021-05-30 23:53:46', '#def');
+*/
 
 -- 123 게시글
 insert into article (user_id, title, content, created_by, modified_by, created_at, modified_at)
@@ -1457,7 +1458,7 @@ values (49, 'uno', 1, '퍼가요~', '2021-03-02 22:40:04', '2021-04-27 15:38:09'
        (49, 'uno', 1, '또 퍼가요~', '2021-03-04 22:40:04', '2021-04-27 15:38:09', 'Uno', 'Uno'),
        (49, 'uno', 1, '또또 퍼가요~', '2021-03-05 22:40:04', '2021-04-27 15:38:09', 'Uno', 'Uno')
 ;*/
-/*
+
 insert into hashtag (hashtag_name, created_at, modified_at, created_by, modified_by)
 values ('blue', now(), now(), 'uno', 'uno'),
        ('crimson', now(), now(), 'uno', 'uno'),
@@ -1479,8 +1480,8 @@ values ('blue', now(), now(), 'uno', 'uno'),
        ('yellow', now(), now(), 'uno', 'uno'),
        ('white', now(), now(), 'uno', 'uno')
 ;
-*/
-/*insert into article_hashtag (article_id, hashtag_id)
+
+insert into article_hashtag (article_id, hashtag_id)
 values (1, 11),
        (2, 13),
        (3, 13),
@@ -1577,4 +1578,4 @@ values (1, 11),
        (119, 12),
        (120, 18),
        (122, 18)
-;*/
+;

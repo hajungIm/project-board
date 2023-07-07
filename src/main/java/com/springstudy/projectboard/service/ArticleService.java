@@ -1,11 +1,13 @@
 package com.springstudy.projectboard.service;
 
 import com.springstudy.projectboard.domain.Article;
+import com.springstudy.projectboard.domain.Hashtag;
 import com.springstudy.projectboard.domain.UserAccount;
 import com.springstudy.projectboard.domain.constant.SearchType;
 import com.springstudy.projectboard.dto.ArticleDto;
 import com.springstudy.projectboard.dto.ArticleWithCommentsDto;
 import com.springstudy.projectboard.repository.ArticleRepository;
+import com.springstudy.projectboard.repository.HashtagRepository;
 import com.springstudy.projectboard.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,23 +28,29 @@ import java.util.List;
 @Service
 public class ArticleService {
 
+    private final HashtagService hashtagService;
     private final ArticleRepository articleRepository;
     private final UserAccountRepository userAccountRepository;
+    private final HashtagRepository hashtagRepository;
 
     @Transactional(readOnly = true)
-    public Page<ArticleDto> searchArticles(SearchType searchType, String search_keyword, Pageable pageable) {
-        if (search_keyword == null || search_keyword.isBlank()) {
+    public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
+        if (searchKeyword == null || searchKeyword.isBlank()) {
             return articleRepository.findAll(pageable).map(ArticleDto::from);
         }
 
         return switch (searchType) {
-            case TITLE -> articleRepository.findByTitleContaining(search_keyword, pageable).map(ArticleDto::from);
-            case CONTENT -> articleRepository.findByContentContaining(search_keyword, pageable).map(ArticleDto::from);
+            case TITLE -> articleRepository.findByTitleContaining(searchKeyword, pageable).map(ArticleDto::from);
+            case CONTENT -> articleRepository.findByContentContaining(searchKeyword, pageable).map(ArticleDto::from);
             case ID ->
-                    articleRepository.findByUserAccount_UserIdContaining(search_keyword, pageable).map(ArticleDto::from);
+                    articleRepository.findByUserAccount_UserIdContaining(searchKeyword, pageable).map(ArticleDto::from);
             case NICKNAME ->
-                    articleRepository.findByUserAccount_NicknameContaining(search_keyword, pageable).map(ArticleDto::from);
-            case HASHTAG -> articleRepository.findByHashtag("#" + search_keyword, pageable).map(ArticleDto::from);
+                    articleRepository.findByUserAccount_NicknameContaining(searchKeyword, pageable).map(ArticleDto::from);
+            case HASHTAG -> articleRepository.findByHashtagNames(
+                            Arrays.stream(searchKeyword.split(" ")).toList(),
+                            pageable
+                    )
+                    .map(ArticleDto::from);
         };
     }
 
@@ -70,11 +81,25 @@ public class ArticleService {
             if (article.getUserAccount().equals(userAccount)) {
                 if (dto.title() != null) article.setTitle(dto.title());
                 if (dto.content() != null) article.setContent(dto.content());
-                article.setHashtag(dto.hashtag());
+
+                Set<Long> hashtagIds = article.getHashtags().stream()
+                        .map(Hashtag::getId)
+                        .collect(Collectors.toUnmodifiableSet());
+                article.clearHashtags();
+                articleRepository.flush();
+
+                hashtagIds.forEach(hashtagService::deleteHashtagWithoutArticles);
+
+                Set<Hashtag> hashtags = renewHashtagsFromContent(dto.content());
+                article.addHashtags(hashtags);
             }
         } catch (EntityNotFoundException e) {
             log.warn("게시글 업데이트 실패. 게시글을 수정하는 데 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
         }
+    }
+
+    private Set<Hashtag> renewHashtagsFromContent(String content) {
+        return null;
     }
 
     public void deleteArticle(long articleId, String userId) {
@@ -86,12 +111,13 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ArticleDto> searchArticlesViaHashtag(String hashtag, Pageable pageable) {
-        if (hashtag == null || hashtag.isBlank()) {
+    public Page<ArticleDto> searchArticlesViaHashtag(String hashtagName, Pageable pageable) {
+        if (hashtagName == null || hashtagName.isBlank()) {
             return Page.empty(pageable);
         }
 
-        return articleRepository.findByHashtag(hashtag, pageable).map(ArticleDto::from);
+        return articleRepository.findByHashtagNames(List.of(hashtagName), pageable)
+                .map(ArticleDto::from);
     }
 
     public List<String> getHashtags() {
