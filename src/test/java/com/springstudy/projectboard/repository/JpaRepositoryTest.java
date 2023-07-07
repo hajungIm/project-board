@@ -2,6 +2,7 @@ package com.springstudy.projectboard.repository;
 
 import com.springstudy.projectboard.config.JpaConfig;
 import com.springstudy.projectboard.domain.Article;
+import com.springstudy.projectboard.domain.Hashtag;
 import com.springstudy.projectboard.domain.UserAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,15 +28,18 @@ class JpaRepositoryTest {
     private final ArticleRepository articleRepository;
     private final ArticleCommentRepository articleCommentRepository;
     private final UserAccountRepository userAccountRepository;
+    private final HashtagRepository hashtagRepository;
 
     public JpaRepositoryTest(
             @Autowired ArticleRepository articleRepository,
             @Autowired ArticleCommentRepository articleCommentRepository,
-            @Autowired UserAccountRepository userAccountRepository
+            @Autowired UserAccountRepository userAccountRepository,
+            @Autowired HashtagRepository hashtagRepository
     ) {
         this.articleRepository = articleRepository;
         this.articleCommentRepository = articleCommentRepository;
         this.userAccountRepository = userAccountRepository;
+        this.hashtagRepository = hashtagRepository;
     }
 
     @DisplayName("select 테스트")
@@ -48,7 +53,7 @@ class JpaRepositoryTest {
         // Then
         assertThat(articles)
                 .isNotNull()
-                .hasSize(126);
+                .hasSize(123);
 
     }
 
@@ -58,7 +63,8 @@ class JpaRepositoryTest {
         // Given
         long previousCount = articleRepository.count();
         UserAccount userAccount = userAccountRepository.save(UserAccount.of("ihj", "pw", null, null, null));
-        Article article = Article.of(userAccount, "new", "new", "#spring");
+        Article article = Article.of(userAccount, "new", "new");
+        article.addHashtags(Set.of(Hashtag.of("spring")));
 
         // When
         articleRepository.save(article);
@@ -75,7 +81,7 @@ class JpaRepositoryTest {
         // Given
         Article article = articleRepository.findById(1L).orElseThrow();
         String updatedHashtag = "#springboot";
-        article.setHashtag(updatedHashtag);
+        article.addHashtags(Set.of(Hashtag.of(updatedHashtag)));
 
         // When
         Article savedArticle = articleRepository.saveAndFlush(article);

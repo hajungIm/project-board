@@ -6,6 +6,7 @@ import com.springstudy.projectboard.domain.constant.FormStatus;
 import com.springstudy.projectboard.domain.constant.SearchType;
 import com.springstudy.projectboard.dto.ArticleDto;
 import com.springstudy.projectboard.dto.ArticleWithCommentsDto;
+import com.springstudy.projectboard.dto.HashtagDto;
 import com.springstudy.projectboard.dto.UserAccountDto;
 import com.springstudy.projectboard.dto.response.ArticleResponse;
 import com.springstudy.projectboard.request.ArticleRequest;
@@ -267,7 +268,7 @@ class ArticleControllerTest {
     @Test
     void givenNewArticleInfo_whenRequesting_thenSavesNewArticle() throws Exception {
         // Given
-        ArticleRequest articleRequest = ArticleRequest.of("new title", "new content", "#new");
+        ArticleRequest articleRequest = ArticleRequest.of("new title", "new content");
         willDoNothing().given(articleService).saveArticle(any(ArticleDto.class));
 
         // When
@@ -329,7 +330,7 @@ class ArticleControllerTest {
     void givenUpdatedArticleInfo_whenRequesting_thenUpdatesNewArticle() throws Exception {
         // Given
         long articleId = 1L;
-        ArticleRequest articleRequest = ArticleRequest.of("new title", "new content", "#new");
+        ArticleRequest articleRequest = ArticleRequest.of("new title", "new content");
         willDoNothing().given(articleService).updateArticle(eq(articleId), any(ArticleDto.class));
 
         // When
@@ -375,7 +376,7 @@ class ArticleControllerTest {
                 createUserAccountDto(),
                 "title",
                 "content",
-                "#java"
+                Set.of(HashtagDto.of("java"))
         );
     }
 
@@ -386,7 +387,7 @@ class ArticleControllerTest {
                 Set.of(),
                 "title",
                 "content",
-                "#java",
+                Set.of(HashtagDto.of("java")),
                 LocalDateTime.now(),
                 "ihj",
                 LocalDateTime.now(),
