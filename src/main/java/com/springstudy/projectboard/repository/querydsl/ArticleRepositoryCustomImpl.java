@@ -1,8 +1,11 @@
 package com.springstudy.projectboard.repository.querydsl;
 
+import com.querydsl.jpa.JPQLQuery;
 import com.springstudy.projectboard.domain.Article;
 import com.springstudy.projectboard.domain.QArticle;
+import com.springstudy.projectboard.domain.QHashtag;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -27,6 +30,14 @@ public class ArticleRepositoryCustomImpl extends QuerydslRepositorySupport imple
 
     @Override
     public Page<Article> findByHashtagNames(Collection<String> hashtagNames, Pageable pageable) {
-        return null;
+        QHashtag hashtag = QHashtag.hashtag;
+        QArticle article = QArticle.article;
+
+        JPQLQuery<Article> query = from(article)
+                .innerJoin(article.hashtags, hashtag)
+                .where(hashtag.hashtagName.in(hashtagNames));
+        List<Article> articles = getQuerydsl().applyPagination(pageable, query).fetch();
+
+        return new PageImpl<>(articles, pageable, query.fetchCount());
     }
 }
