@@ -80,15 +80,18 @@ class JpaRepositoryTest {
     void givenTestData_whenUpdating_thenWorksFine() {
         // Given
         Article article = articleRepository.findById(1L).orElseThrow();
-        String updatedHashtag = "#springboot";
-        article.addHashtags(Set.of(Hashtag.of(updatedHashtag)));
+        Hashtag updatedHashtag = Hashtag.of("springboot");
+        article.clearHashtags();
+        article.addHashtags(Set.of(updatedHashtag));
 
         // When
         Article savedArticle = articleRepository.saveAndFlush(article);
 
         // Then
-        assertThat(savedArticle)
-                .hasFieldOrPropertyWithValue("hashtag", updatedHashtag);
+        assertThat(savedArticle.getHashtags())
+                .hasSize(1)
+                .extracting("hashtagName", String.class)
+                        .containsExactly(updatedHashtag.getHashtagName());
 
     }
 
