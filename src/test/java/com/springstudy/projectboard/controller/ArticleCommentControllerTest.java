@@ -33,8 +33,7 @@ class ArticleCommentControllerTest {
     private final MockMvc mvc;
     private final FormDataEncoder formDataEncoder;
 
-    @MockBean
-    private ArticleCommentService articleCommentService;
+    @MockBean private ArticleCommentService articleCommentService;
 
     public ArticleCommentControllerTest(
             @Autowired MockMvc mvc,
@@ -91,6 +90,30 @@ class ArticleCommentControllerTest {
 
         // Then
         then(articleCommentService).should().deleteArticleComment(articleCommentId, userId);
+    }
+
+    @WithUserDetails(value = "ihjTest", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 대댓글 등록 - 정상 호출")
+    @Test
+    void givenArticleCommentInfoWithParentCommentId_whenRequesting_thenSavesNewChildComment() throws Exception {
+        // Given
+        long articleId = 1L;
+        ArticleCommentRequest request = ArticleCommentRequest.of(articleId, 1L, "test comment");
+        willDoNothing().given(articleCommentService).saveArticleComment(any(ArticleCommentDto.class));
+
+        // When
+
+        // Then
+        mvc.perform(
+                        post("/comments/new")
+                                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                .content(formDataEncoder.encode(request))
+                                .with(csrf())
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/articles/" + articleId))
+                .andExpect(redirectedUrl("/articles/" + articleId));
+        then(articleCommentService).should().saveArticleComment(any(ArticleCommentDto.class));
     }
 
 }
