@@ -31,6 +31,10 @@ insert into user_account (user_id, user_password, nickname, email, memo, created
                           modified_by)
 values ('ihj', '{noop}pw', 'ihj', 'ihj@email.com', 'memo', now(), 'ihj', now(), 'ihj')
 ;
+insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at,
+                          modified_by)
+values ('test', '{noop}pw', 'test', 'test@email.com', 'memo', now(), 'test', now(), 'test')
+;
 
 /*
 -- 해시태그 포함 데이터
