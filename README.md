@@ -32,9 +32,17 @@ Spring Boot
 * Bootstrap 5.2.0-beta1
 * Heroku
 
-## 데모 페이지
+## 데모 영상
 
-(작성 중)
+[![게시판_데모.png](https://github.com/hajungIm/project-board/assets/133209775/b71ad9b0-033d-42ea-a8bf-a7431d4a5305)](https://drive.google.com/file/d/1CC2--WV9-SBIMrmys6hkW0MeChE9Qtib/view?usp=sharing)
+
+* 구현 기능
+    - 페이징 및 검색 (로그인 없이 가능)
+    - 로그인 (일반 로그인, 카카오톡 로그인)
+    - 게시글 수정, 삭제
+    - 댓글 작성, 수정, 삭제
+    - 대댓글 작성, 수정, 삭제
+    - 본문 내 해시태그 자동 감지
 
 ## 질문, 건의
 
@@ -44,8 +52,13 @@ Spring Boot
 * Discussions: 프로젝트와 관련한 논의와 정보
 
 ## Reference
-* 유즈케이스 다이어그램: #4, https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=use-case.svg#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FhajungIm%2Fproject-board%2Fmain%2Fdocument%2Fuse-case.svg
-* API Endpoint 구글 시트: #1, https://docs.google.com/spreadsheets/d/1AQu4SZB2yYTACrO6iRrcRHhtu6I-tPletpjMQlKevhI/edit?usp=sharing
 
+* use case
+<img width="900" alt="게시판_use_case" src="https://github.com/hajungIm/project-board/assets/133209775/24aa489c-8b56-4483-a0cf-3c59e48f736f">
 
+* api endpoints
+<img width="936" alt="게시판api_endpoints" src="https://github.com/hajungIm/project-board/assets/133209775/8d39eec8-e429-4508-bdc8-9e831d3da345">
+
+* api spec
+<img width="742" alt="게시판api_spec" src="https://github.com/hajungIm/project-board/assets/133209775/c3c99664-518a-4722-a0eb-ac34a96db560">
 
