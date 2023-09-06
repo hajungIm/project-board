@@ -34,7 +34,8 @@ Spring Boot
 
 ## 데모 영상
 
-[![게시판_데모.png](https://github.com/hajungIm/project-board/assets/133209775/b71ad9b0-033d-42ea-a8bf-a7431d4a5305)](https://drive.google.com/file/d/1CC2--WV9-SBIMrmys6hkW0MeChE9Qtib/view?usp=sharing)
+[데모 영상 확인하기](https://drive.google.com/file/d/1CC2--WV9-SBIMrmys6hkW0MeChE9Qtib/view?usp=sharing)
+
 
 * 구현 기능
     - 페이징 및 검색 (로그인 없이 가능)
